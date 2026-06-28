@@ -50,6 +50,11 @@
     <button class="button" onclick="getUserInfo()">📊 Показать данные</button>
     <div id="info" class="status">📌 Здесь появится информация о кошельке</div>
 
+    <h2>👥 7. Количество рефералов</h2>
+    <input class="input" id="referralAddress" placeholder="Адрес пользователя (оставьте пустым для своего)">
+    <button class="button" onclick="getReferralCount()">📊 Показать количество рефералов</button>
+    <div id="referralInfo" class="status">📌 Здесь появится количество прямых рефералов</div>
+
     <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
     <script>
         const CONTRACT_ADDRESS = '0xD50027E8806E7e6584F0FdEb2a53cfE7601ec075';
@@ -178,6 +183,17 @@
                 `;
             } catch (error) {
                 document.getElementById('info').innerHTML = `❌ Ошибка: ${error.message}`;
+            }
+        }
+
+        async function getReferralCount() {
+            if (!contract) return alert('Сначала подключи кошелек');
+            const user = document.getElementById('referralAddress').value || userAddress;
+            try {
+                const count = await contract.methods.getReferralCount(user).call();
+                document.getElementById('referralInfo').innerHTML = `👥 Прямых рефералов: ${count}`;
+            } catch (error) {
+                document.getElementById('referralInfo').innerHTML = `❌ Ошибка: ${error.message}`;
             }
         }
     </script>
